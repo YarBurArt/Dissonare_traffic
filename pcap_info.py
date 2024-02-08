@@ -3,6 +3,7 @@ create by ftaxats/Pcap-Analyser
 rewrite by yarburart
 """
 import re
+import os
 import struct
 from typing import Tuple, Any
 import datetime
@@ -163,28 +164,9 @@ class PcapUriFinder:
         return website_urls
 
 
-def main():  # TODO: rewrite tests
-    """
-    necessary only for development, tests from crutches
-    """
-    pcap_info = PcapInfoExtractor("phishingattack.pcap")
-    for i in pcap_info.global_info():
-        print(type(i))
-    print()
-    for i in pcap_info.dhcp_frame_info():
-        print(type(i))
-    pcap_info.close_file()
-
-    pcap_finder = PcapUriFinder("phishingattack.pcap")
-    searches = pcap_finder.extract_search_engine_keywords()
-    for engine, keywords in searches.items():
-        print(f"Search engine used: {engine}")
-        # print(f"Keywords used: {keywords}")  # FIXME:
-
-    for i in pcap_finder.find_website_uris_by_domain():
-        print(i)
-
-    pcap_finder.close_file()
+def main():
+    """ tests from crutches """
+    os.system("pytest")
 
 
 if __name__ == '__main__':
