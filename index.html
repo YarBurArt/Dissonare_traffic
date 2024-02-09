@@ -38,7 +38,10 @@
             let formData = new FormData();
             req.onreadystatechange = function() {
                 if (req.readyState == XMLHttpRequest.DONE) {
-                    alert(req.responseText);
+                    // alert(req.responseText);
+                    jsonData = JSON.parse(req.responseText);
+                    console.log(jsonData);
+                    document.getElementsByTagName("p")[0].innerHTML = req.responseText;
                 }
             }
             formData.append("file", photo);                                
@@ -52,5 +55,6 @@
         <input id="file" name="file" type="file" />
         <button onclick="SavePcap();">Upload</button> 
     </div>
+    <p></p>
 </body>
 </html>
