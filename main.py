@@ -1,12 +1,15 @@
 import os
 
-from fastapi import FastAPI, File, UploadFile, Request
+from fastapi import (
+    FastAPI, File, UploadFile,
+    Request, Response)
 import shutil
 
 from pcap_info import PcapInfoExtractor, PcapUriFinder
 
 
 app = FastAPI()
+root = os.path.dirname(os.path.abspath(__file__))
 
 
 def save_file_at_dir(dir_path, filename, file_content="", mode='w'):
@@ -42,6 +45,13 @@ async def proccess_file(filename):
 
 
 @app.get("/")
+async def index_route():
+    with open(os.path.join(root, 'index.html')) as fh:
+        data = fh.read()
+    return Response(content=data, media_type="text/html")
+
+
+@app.get("/main")
 async def main_route():
     return {"message": "Hey, It is me Dissonare traffic"}
 
