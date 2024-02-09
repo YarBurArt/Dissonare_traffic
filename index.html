@@ -3,8 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 16px auto;
+            width: 300px;
+        }
+        #file, button {
+            margin: 8px;
+            padding: 8px 16px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+    </style>
 </head>
 <body>
-
+    <script type="text/javascript">
+        document.querySelector('form').onsubmit = event => {
+            event.preventDefault(); 
+            fetch(event.target.action, {
+                method: 'POST',
+                body: new FormData(event.target), 
+            })
+        };
+    </script>
+    <h1>Traffic analysis in pcap files, free with open source</h1> 
+    <form action="/upload_pcap" method="post" enctype="multipart/form-data">
+        <label for="file">File</label>
+        <input id="file" name="file" type="file" />
+        <button>Upload</button>
+    </form>
 </body>
 </html>

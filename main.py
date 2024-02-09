@@ -3,6 +3,7 @@ import os
 from fastapi import (
     FastAPI, File, UploadFile,
     Request, Response)
+from fastapi.responses import JSONResponse
 import shutil
 
 from pcap_info import PcapInfoExtractor, PcapUriFinder
@@ -30,7 +31,7 @@ async def proccess_file(filename):
     searches = pcap_finder.extract_search_engine_keywords()
     urls = pcap_finder.find_website_uris_by_domain()
 
-    return {"global_info": {
+    return JSONResponse(content={"global_info": {
                 "global_header": global_header,
                 "magic_number": magic_number,
                 "endianness": endianness,
@@ -41,7 +42,7 @@ async def proccess_file(filename):
             "dhcp_frame_info": frame_tpl,
             "searches": searches,
             "urls": urls
-            }
+            }, status_code=200)
 
 
 @app.get("/")
