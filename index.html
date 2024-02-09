@@ -41,7 +41,9 @@
                     // alert(req.responseText);
                     jsonData = JSON.parse(req.responseText);
                     console.log(jsonData);
-                    document.getElementsByTagName("p")[0].innerHTML = req.responseText;
+                    const jsonStr = JSON.stringify(jsonData, null, 2);
+                    const formattedJson = jsonStr.replace(/ /g, '&nbsp;').replace(/\n/g, '<br>');
+                    document.getElementsByTagName("p")[0].innerHTML = formattedJson;
                 }
             }
             formData.append("file", photo);                                
