@@ -11,7 +11,7 @@
         h1 {
             text-align: center;
         }
-        form {
+        .form {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -31,19 +31,26 @@
 </head>
 <body>
     <script type="text/javascript">
-        document.querySelector('form').onsubmit = event => {
-            event.preventDefault(); 
-            fetch(event.target.action, {
-                method: 'POST',
-                body: new FormData(event.target), 
-            })
-        };
+        function SavePcap() 
+        {
+            let photo = document.getElementById("file").files[0];  // file from input
+            let req = new XMLHttpRequest();
+            let formData = new FormData();
+            req.onreadystatechange = function() {
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    alert(req.responseText);
+                }
+            }
+            formData.append("file", photo);                                
+            req.open("POST", '/upload_pcap');
+            req.send(formData);
+        }
     </script>
     <h1>Traffic analysis in pcap files, free with open source</h1> 
-    <form action="/upload_pcap" method="post" enctype="multipart/form-data">
+    <div class="form">
         <label for="file">File</label>
         <input id="file" name="file" type="file" />
-        <button>Upload</button>
-    </form>
+        <button onclick="SavePcap();">Upload</button> 
+    </div>
 </body>
 </html>
