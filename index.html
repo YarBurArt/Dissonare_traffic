@@ -27,10 +27,65 @@
         button:hover {
             background-color: #ddd;
         }
+        ul {
+            list-style: none;
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+        li {
+            display: flex;
+            flex-direction: column;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        li > ul {
+            margin-left: 20px;
+            padding: 0;
+        }
+        li > ul > li {
+            border-top: none;
+        }
+        .key {
+            font-weight: bold;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <script type="text/javascript">
+        function createNestedList(jsonData) {
+            function createList(data, listElement) {
+                for (const key in data) {
+                    const value = data[key];
+                    const listItem = document.createElement('li');
+                    
+                    if (Array.isArray(value) && value.length === 0) {
+                        listItem.textContent = `${key}: [ 78 7A ]`; // xz (some error)
+                        console.log(key);
+                    }else if (typeof value === 'object') {
+                        listItem.textContent = `${key} /`;
+                        const nestedList = document.createElement('ul');
+                        createList(value, nestedList);
+                        listItem.appendChild(nestedList);
+                    } else {
+                        listItem.textContent = `${key}: ${value}`;
+                        console.log(value);
+                    }
+                    listElement.appendChild(listItem);
+                }
+            }
+            const listContainer = document.getElementById('json-list');
+            listContainer.innerHTML = '';
+
+            createList(jsonData, listContainer);
+        }
         function SavePcap() 
         {
             let photo = document.getElementById("file").files[0];  // file from input
@@ -38,12 +93,9 @@
             let formData = new FormData();
             req.onreadystatechange = function() {
                 if (req.readyState == XMLHttpRequest.DONE) {
-                    // alert(req.responseText);
                     jsonData = JSON.parse(req.responseText);
                     console.log(jsonData);
-                    const jsonStr = JSON.stringify(jsonData, null, 2);
-                    const formattedJson = jsonStr.replace(/ /g, '&nbsp;').replace(/\n/g, '<br>');
-                    document.getElementsByTagName("p")[0].innerHTML = formattedJson;
+                    createNestedList(jsonData); 
                 }
             }
             formData.append("file", photo);                                
@@ -57,6 +109,11 @@
         <input id="file" name="file" type="file" />
         <button onclick="SavePcap();">Upload</button> 
     </div>
-    <p></p>
+    <ul id="json-list">
+        
+    </ul>
+    <footer>
+        <p>&copy; 2024. All rights reserved, with the license Apach-2</p>
+    </footer>
 </body>
 </html>
