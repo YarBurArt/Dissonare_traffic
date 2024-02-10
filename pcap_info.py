@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.DEBUG, filename='pcap_info.log',
 def _load_pcap(pcap_file_path):
     test_path = str(pcap_file_path)
     assert test_path.endswith(".pcap") or test_path.endswith(".csv")  # TODO: csv
-    return open(pcap_file_path, 'rb', encoding="utf-8")
+    return open(pcap_file_path, 'rb')
 
 
 class PcapInfoExtractor:
@@ -35,11 +35,13 @@ class PcapInfoExtractor:
             logging.error("like a fool's defense ", e)
 
     def close_file(self):
+        """ separate closing as an error may occur """
         self.pcap_data.close()
         logging.info("File %s is close", self.pcap_data.name)
 
     def global_info(self) -> Tuple[int, str, str, int | Any,
-                                   int | Any, int | Any, int | Any]:
+                                   int | Any, int | Any,
+                                   int | Any, str, str]:
         """
         to get basic information about the file
         :return: formatted tuple of the most relevant information
@@ -60,7 +62,8 @@ class PcapInfoExtractor:
 
         return (len(global_header), hex(magic_number),
                 endianness, major_version, minor_version,
-                snaplen, data_link_type)
+                snaplen, data_link_type,
+                timezone_offset, timestamp_accuracy)
 
     def dhcp_frame_info(self) -> tuple[str, ...]:
         """
@@ -110,6 +113,7 @@ class PcapUriFinder:
             logging.error("like a fool's defense ", e)
 
     def close_file(self):
+        """ separate closing as an error may occur """
         self.pcap_data.close()
         logging.info("File %s is close", self.pcap_data.name)
 

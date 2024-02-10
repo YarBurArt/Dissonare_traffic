@@ -29,7 +29,8 @@ async def proccess_file(filename) -> JSONResponse:
     pcap_info = PcapInfoExtractor(filename)
     (global_header, magic_number,
      endianness, major_version, minor_version,
-     snaplen, data_link_type) = pcap_info.global_info()
+     snaplen, data_link_type,
+     timezone_offset, timestamp_accuracy) = pcap_info.global_info()
     frame_tpl = pcap_info.dhcp_frame_info()
     pcap_info.close_file()
 
@@ -44,7 +45,10 @@ async def proccess_file(filename) -> JSONResponse:
                 "major_version": major_version,
                 "minor_version": minor_version,
                 "snaplen": snaplen,
-                "data_link_type": data_link_type},
+                "data_link_type": data_link_type,
+                "timezone": {
+                    "offset": timezone_offset,
+                    "accuracy": timestamp_accuracy}},
             "dhcp_frame_info": frame_tpl,
             "searches": searches,
             "urls": urls

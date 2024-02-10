@@ -14,7 +14,7 @@ def test_global_info():
     assert res
     assert isinstance(res, tuple) or list(map(type, res)) \
            == Tuple[int, str, str, int,
-                    int, int, int]
+                    int, int, int, str, str]
     # check values
     assert res == (24, "0xa1b2c3d4", "big", 2, 4, 262144, 1)
 
