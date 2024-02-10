@@ -1,9 +1,9 @@
 import os
 
 from fastapi import (
-    FastAPI, File, UploadFile,
-    Request, Response)
-from fastapi.responses import JSONResponse
+    FastAPI, File,
+    UploadFile, Request)
+from fastapi.responses import JSONResponse, HTMLResponse
 import shutil
 
 from pcap_info import PcapInfoExtractor, PcapUriFinder
@@ -14,12 +14,14 @@ root = os.path.dirname(os.path.abspath(__file__))
 
 
 def save_file_at_dir(dir_path, filename, file_content="", mode='w'):
+    """a little crutch of a path"""
     os.makedirs(dir_path, exist_ok=True)
     with open(os.path.join(dir_path, filename), mode) as f:
         f.write(file_content)
 
 
-async def proccess_file(filename):
+async def proccess_file(filename) -> JSONResponse:
+    """using the pcap_info tool, analyzes the file and collects the result"""
     pcap_info = PcapInfoExtractor(filename)
     (global_header, magic_number,
      endianness, major_version, minor_version,
@@ -42,14 +44,15 @@ async def proccess_file(filename):
             "dhcp_frame_info": frame_tpl,
             "searches": searches,
             "urls": urls
-            }, status_code=200)
+            })
 
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def index_route():
+    """ returns a small file with all the gui you need """
     with open(os.path.join(root, 'index.html')) as fh:
         data = fh.read()
-    return Response(content=data, media_type="text/html")
+    return data
 
 
 @app.get("/main")
@@ -69,10 +72,19 @@ async def about_route():
 
 @app.post("/upload_pcap")
 async def upload_route(request: Request, file: UploadFile = File(...)):
+    """
+    Routes to the main load, returns the result of the analysis itself
+    :param request: classic request parameters
+    :param file: file, loaded in the stream
+    :return: json with basic pcap parameters and security version
+    """
+    # user has only one analyze in one browser session + ip, so that's why there are no collisions
     client_ip = request.client.host
+    file.filename = "some_attacks.pcap"
+
     rel_path = "data\\" + client_ip + "\\" + file.filename
     path = os.path.join(os.path.dirname(__file__), rel_path)
-    save_file_at_dir("data/" + client_ip, file.filename)  # FIXME
+    save_file_at_dir("data/" + client_ip, file.filename)
     try:
         with open(path, 'wb') as f:
             shutil.copyfileobj(file.file, f)
