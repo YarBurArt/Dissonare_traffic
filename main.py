@@ -1,10 +1,14 @@
+"""
+main api script saves the file and collects information about it
+create by yarburart
+"""
 import os
+import shutil
 
 from fastapi import (
     FastAPI, File,
     UploadFile, Request)
 from fastapi.responses import JSONResponse, HTMLResponse
-import shutil
 
 from pcap_info import PcapInfoExtractor, PcapUriFinder
 
@@ -16,7 +20,7 @@ root = os.path.dirname(os.path.abspath(__file__))
 def save_file_at_dir(dir_path, filename, file_content="", mode='w'):
     """a little crutch of a path"""
     os.makedirs(dir_path, exist_ok=True)
-    with open(os.path.join(dir_path, filename), mode) as f:
+    with open(os.path.join(dir_path, filename), mode, encoding="utf-8") as f:
         f.write(file_content)
 
 
@@ -50,24 +54,27 @@ async def proccess_file(filename) -> JSONResponse:
 @app.get("/", response_class=HTMLResponse)
 async def index_route():
     """ returns a small file with all the gui you need """
-    with open(os.path.join(root, 'index.html')) as fh:
+    with open(os.path.join(root, 'index.html'), encoding="utf-8") as fh:
         data = fh.read()
     return data
 
 
 @app.get("/main")
 async def main_route():
+    """ just for echo test api """
     return {"message": "Hey, It is me Dissonare traffic"}
 
 
 @app.get("/about")
 async def about_route():
+    """ basic information about the api and output, while here is a stub """
     return {"message": "This is the API for security analysis of traffic. "
                        "It checks the traffic in real-time for any abnormal or malicious activity, "
                        "while it processes the files submitted by the user. "
                        "It protects the servers and users of the API from any threat, "
                        "while providing an optimized service. "
-                       "This API is used to ensure that the traffic is secure and safe for all parties involved."}
+                       "This API is used to ensure that the traffic "
+                       "is secure and safe for all parties involved."}
 
 
 @app.post("/upload_pcap")
@@ -88,15 +95,10 @@ async def upload_route(request: Request, file: UploadFile = File(...)):
     try:
         with open(path, 'wb') as f:
             shutil.copyfileobj(file.file, f)
-    except Exception as e:
+        return await proccess_file(path)
+    except (IOError, OSError) as io_e:
         return {"message": "There was an error uploading the file",
-                "err": e,
+                "err": io_e,  # debug, rewrite it for prod
                 "path": path}
     finally:
         file.file.close()
-
-    try:
-        return await proccess_file(path)
-    except Exception:
-        return {"message": "There was an error processing the file",
-                "error": Exception}  # FIXME

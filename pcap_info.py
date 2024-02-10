@@ -1,4 +1,5 @@
 """
+script to search for basic information and anomalies from .pcap
 create by ftaxats/Pcap-Analyser
 rewrite by yarburart
 """
@@ -17,7 +18,7 @@ logging.basicConfig(level=logging.DEBUG, filename='pcap_info.log',
 def _load_pcap(pcap_file_path):
     test_path = str(pcap_file_path)
     assert test_path.endswith(".pcap") or test_path.endswith(".csv")  # TODO: csv
-    return open(pcap_file_path, 'rb')
+    return open(pcap_file_path, 'rb', encoding="utf-8")
 
 
 class PcapInfoExtractor:
