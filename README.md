@@ -27,3 +27,7 @@ poetry shell
 ```
 poetry run uvicorn main:app --reload --port 8001
 ```
+
+On linux, you may need to use `python3 -m poetry` replacing `poetry`. 
+
+On android in termux the poetry installation needs to be googled manually.
