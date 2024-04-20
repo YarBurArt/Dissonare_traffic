@@ -31,3 +31,5 @@ poetry run uvicorn main:app --reload --port 8001
 On linux, you may need to use `python3 -m poetry` replacing `poetry`. Then you don't need to enter the `poetry shell`.
 
 On android in termux the poetry installation needs to be googled manually.
+
+<!--  Hint: user input goes into the output, even with files of a different file type. Try to write an exploit on this. -->
