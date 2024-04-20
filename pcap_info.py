@@ -14,6 +14,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG, filename='pcap_info.log',
                     format='%(asctime)s %(levelname)s:%(message)s')
 
+
 class Error(Exception):
     """put an error shell here"""
     pass
@@ -23,7 +24,6 @@ class FileTypeError(Error):
     def __init__(self, msg, help_tip):
         self.msg = msg
         self.help_tip = help_tip
-
 
 
 def _load_pcap(pcap_file_path):
