@@ -8,8 +8,7 @@ import shutil
 from fastapi import (
     FastAPI, File,
     UploadFile, Request)
-from fastapi.responses import JSONResponse, HTMLResponse
-
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 from pcap_info import PcapInfoExtractor, PcapUriFinder
 
 
@@ -61,6 +60,13 @@ async def index_route():
     with open(os.path.join(root, 'index.html'), encoding="utf-8") as fh:
         data = fh.read()
     return data
+
+
+favicon_path = 'favicon.ico'
+
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse(favicon_path)
 
 
 @app.get("/main")

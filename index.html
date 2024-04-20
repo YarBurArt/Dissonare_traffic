@@ -96,6 +96,9 @@
                     jsonData = JSON.parse(req.responseText);
                     console.log(jsonData);
                     createNestedList(jsonData); 
+                } else {
+                    alert("incorrect file"); 
+                    window.location.href = '/';
                 }
             }
             formData.append("file", photo);                                
