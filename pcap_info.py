@@ -14,9 +14,24 @@ import logging
 logging.basicConfig(level=logging.DEBUG, filename='pcap_info.log',
                     format='%(asctime)s %(levelname)s:%(message)s')
 
+class Error(Exception):
+    """put an error shell here"""
+    pass
+ 
+class FileTypeError(Error):
+    """type error format"""
+    def __init__(self, msg, help_tip):
+        self.msg = msg
+        self.help_tip = help_tip
+
+
 
 def _load_pcap(pcap_file_path):
     test_path = str(pcap_file_path)
+    # TODO: debug assert logic
+    #if not (test_path.endswith(".pcap") or test_path.endswith(".csv")): 
+    #    raise FileTypeError(f"File {pcap_file_path} is not a pcap file.", 
+    #                         "Try another file with type pcap or csv")
     assert test_path.endswith(".pcap") or test_path.endswith(".csv")  # TODO: csv
     return open(pcap_file_path, 'rb')
 
@@ -171,7 +186,10 @@ class PcapUriFinder:
 
 def main():
     """ tests from crutches """
-    os.system("pytest")
+    print("""
+    Tests for this file are located in pcap_info_test.py
+    Start only in manual mode via "pytest" 
+    """)
 
 
 if __name__ == '__main__':
