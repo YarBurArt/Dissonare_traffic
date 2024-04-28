@@ -4,7 +4,7 @@
 
 A utility to analyze traffic from a pcap file.
 
-The architectural solutions here are focused on minimalism and a bit of laziness.
+The architectural solutions here are focused on minimalism and a bit of laziness. In this version, the code is obfuscated)
 
 It's actually just an api skin on fastapi for the github.com/ftaxats/Pcap-Analyser repository. 
 
