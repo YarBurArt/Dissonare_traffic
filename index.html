@@ -1,122 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-        }
-        .form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 16px auto;
-            width: 300px;
-        }
-        #file, button {
-            margin: 8px;
-            padding: 8px 16px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-        }
-        button:hover {
-            background-color: #ddd;
-        }
-        ul {
-            list-style: none;
-            padding: 20px;
-            margin: 0 auto;
-            max-width: 800px;
-        }
-        li {
-            display: flex;
-            flex-direction: column;
-            padding: 5px;
-            border-bottom: 1px solid #ddd;
-        }
-        li:last-child {
-            border-bottom: none;
-        }
-        li > ul {
-            margin-left: 20px;
-            padding: 0;
-        }
-        li > ul > li {
-            border-top: none;
-        }
-        .key {
-            font-weight: bold;
-            color: #333;
-        }
-        footer {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <script type="text/javascript">
-        function createNestedList(jsonData) {
-            function createList(data, listElement) {
-                for (const key in data) {
-                    const value = data[key];
-                    const listItem = document.createElement('li');
-                    
-                    if (Array.isArray(value) && value.length === 0) {
-                        listItem.textContent = `${key}: [ 78 7A ]`; // xz (some error)
-                        console.log(key);
-                    }else if (typeof value === 'object') {
-                        listItem.textContent = `${key} /`;
-                        const nestedList = document.createElement('ul');
-                        createList(value, nestedList);
-                        listItem.appendChild(nestedList);
-                    } else {
-                        listItem.textContent = `${key}: ${value}`;
-                        console.log(value);
-                    }
-                    listElement.appendChild(listItem);
-                }
-            }
-            const listContainer = document.getElementById('json-list');
-            listContainer.innerHTML = '';
-
-            createList(jsonData, listContainer);
-        }
-        function SavePcap() 
-        {
-            let photo = document.getElementById("file").files[0];  // file from input
-            let req = new XMLHttpRequest();
-            let formData = new FormData();
-            req.onreadystatechange = function() {
-                if (req.readyState == XMLHttpRequest.DONE) {
-                    jsonData = JSON.parse(req.responseText);
-                    console.log(jsonData);
-                    createNestedList(jsonData); 
-                } else {
-                    alert("incorrect file"); 
-                    window.location.href = '/';
-                }
-            }
-            formData.append("file", photo);                                
-            req.open("POST", '/upload_pcap');
-            req.send(formData);
-        }
-    </script>
-    <h1>Traffic analysis in pcap files, free with open source</h1> 
-    <div class="form">
-        <label for="file">File</label>
-        <input id="file" name="file" type="file" />
-        <button onclick="SavePcap();">Upload</button> 
-    </div>
-    <ul id="json-list">
-        
-    </ul>
-    <footer>
-        <p>&copy; 2024. All rights reserved, with the license Apach-2</p>
-    </footer>
-</body>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Title</title>
+<style>
+body{font-family:sans-serif;}#file,button{margin-left:.083333333in;}
+body{color:#333;}h1{text-align:center;}button:hover{background-color:#ddd;}
+button,#file{margin-bottom:.083333333in;}li:last-child{border-bottom-width:medium;}
+#file,button{margin-right:.083333333in;}button,#file{margin-top:.083333333in;}
+button,#file{padding-left:.166666667in;}#file,button{padding-bottom:6pt;}
+button,#file{padding-right:.166666667in;}button,#file{padding-top:6pt;}
+button,#file{font-size:1pc;}button{border-left-width:.0625pc;}button{border-bottom-width:.0625pc;}
+button{border-right-width:.0625pc;}button{border-top-width:.0625pc;}button{border-left-style:solid;}
+li,.form{display:flex;}button{border-bottom-style:solid;}button{border-right-style:solid;}
+li:last-child{border-bottom-style:none;}button{border-top-style:solid;}
+button{border-left-color:#ccc;}button{border-bottom-color:#ccc;}
+li:last-child{border-bottom-color:currentColor;}button{border-right-color:#ccc;}
+button{border-top-color:#ccc;}.form,li{flex-direction:column;}li:last-child,button{border-image:none;}
+ul{list-style:none;}li > ul > li{border-top-width:medium;}ul{padding-left:15pt;}
+li > ul > li{border-top-style:none;}li > ul > li{border-top-color:currentColor;}
+ul{padding-bottom:15pt;}li > ul{margin-left:15pt;}ul{padding-right:15pt;}li > ul > li{border-image:none;}
+.form{align-items:center;}ul{padding-top:15pt;}li > ul{padding-left:0;}.form,ul{margin-left:auto;}
+ul{margin-bottom:0;}.form,ul{margin-right:auto;}ul{margin-top:0;}.form{margin-bottom:.166666667in;}
+ul{max-width:8.333333333in;}li{padding-left:3.75pt;}li{padding-bottom:3.75pt;}
+li{padding-right:3.75pt;}li{padding-top:3.75pt;}#file{border-left-width:.0625pc;}
+li,#file{border-bottom-width:.010416667in;}li,#file{border-bottom-style:solid;}
+li > ul{padding-bottom:0;}li > ul{padding-right:0;}li{border-bottom-color:#ddd;}
+li{border-image:none;}footer{text-align:center;}#file{border-right-width:.0625pc;}
+#file{border-top-width:.0625pc;}#file{border-left-style:solid;}#file{border-right-style:solid;}
+.form{margin-top:.166666667in;}.form{width:225pt;}[class~=key]{font-weight:bold;}#file{border-top-style:solid;}
+li > ul{padding-top:0;}[class~=key]{color:#333;}#file{border-left-color:#ccc;}#file{border-bottom-color:#ccc;}
+#file{border-right-color:#ccc;}#file{border-top-color:#ccc;}#file{border-image:none;}</style></head><body><script type="text/javascript">
+function b(c,d){const e=a();return b=function(f,g)
+{f=f-0xd0;let h=e[f];return h;},b(c,d);}
+(function(d,e){const m=b,f=d();while(!![]){try{
+const g=parseInt(m(0xe2))/0x1+parseInt(m(0xda))/0x2+-parseInt(m(0xd2))/0x3*(parseInt(m(0xe1))/0x4)
++parseInt(m(0xd9))/0x5*(parseInt(m(0xe8))/0x6)+parseInt(m(0xe0))/0x7*(-parseInt(m(0xe5))/0x8)
++-parseInt(m(0xd4))/0x9+parseInt(m(0xe4))/0xa*(parseInt(m(0xd0))/0xb);if(g===e)break;
+else f['push'](f['shift']());}catch(h){f['push'](f['shift']());}}}
+(a,0xa3e78));function c(d){const o=b;function e(g,h)
+{const n=b;for(const i in g){const j=g[i],k=document[n(0xde)]
+('li');if(Array['isArray'](j)&&j[n(0xd8)]===0x0)k[n(0xd7)]=i+n(0xe3),
+console[n(0xd5)](i);else{if(typeof j===n(0xeb)){k[n(0xd7)]=i+'\x20/';
+const l=document[n(0xde)]('ul');e(j,l),k['appendChild'](l);}
+else k[n(0xd7)]=i+':\x20'+j,console[n(0xd5)](j);}h[n(0xdc)](k);}}
+const f=document['getElementById']('json-list');
+f[o(0xd6)]='',e(d,f);}function SavePcap(){const p=b;
+let d=document['getElementById'](p(0xe7))['files'][0x0],
+e=new XMLHttpRequest(),f=new FormData();e['onreadystatechange']=function()
+{const q=p;if(e[q(0xe6)]==XMLHttpRequest[q(0xdb)])
+jsonData=JSON[q(0xdf)](e['responseText']),console[q(0xd5)](jsonData),
+c(jsonData);else{}},f[p(0xe9)]('file',d),e[p(0xd1)](p(0xea),p(0xd3)),
+e[p(0xdd)](f);}function a(){const r=['3172PNolSA','534125dRduCG',
+':\x20[\x2078\x207A\x20]','40tBGdlX','16fBIbch','readyState','file',
+'14772iuJvyc','append','POST','object','2817694vHVhRA','open','951TmXItA',
+'/upload_pcap','8003655uxNmtz','log','innerHTML','textContent','length','655axLAHW',
+'1449182JyndKV','DONE','appendChild','send','createElement','parse','2778391tFdxxP'];
+a=function(){return r;};return a();}</script>
+<script language="javascript">document.write(unescape('%3C%68%31%3E%54%7'
++'2%61%66%66%69%63%20%61%6E%61%6C%79%73%69%73%20%69%6E%20%70%63%61%70%20%'
++'66%69%6C%65%73%2C%20%66%72%65%65%20%77%69%74%68%20%6F%70%65%6E%20%73%6F'
++'%75%72%63%65%3C%2F%68%31%3E%20%0A%3C%64%69%76%20%63%6C%61%73%73%3D%22%6'
++'6%6F%72%6D%22%3E%0A%20%20%20%20%3C%6C%61%62%65%6C%20%66%6F%72%3D%22%66%'
++'69%6C%65%22%3E%46%69%6C%65%3C%2F%6C%61%62%65%6C%3E%0A%20%20%20%20%3C%69'
++'%6E%70%75%74%20%69%64%3D%22%66%69%6C%65%22%20%6E%61%6D%65%3D%22%66%69%6'
++'C%65%22%20%74%79%70%65%3D%22%66%69%6C%65%22%20%2F%3E%0A%20%20%20%20%3C%'
++'62%75%74%74%6F%6E%20%6F%6E%63%6C%69%63%6B%3D%22%53%61%76%65%50%63%61%70'
++'%28%29%3B%22%3E%55%70%6C%6F%61%64%3C%2F%62%75%74%74%6F%6E%3E%20%0A%3C%2'
++'F%64%69%76%3E%0A%3C%75%6C%20%69%64%3D%22%6A%73%6F%6E%2D%6C%69%73%74%22%'
++'3E%3C%2F%75%6C%3E%0A%3C%66%6F%6F%74%65%72%3E%3C%70%3E%26%63%6F%70%79%3B'
++'%20%32%30%32%34%2E%20%41%6C%6C%20%72%69%67%68%74%73%20%72%65%73%65%72%7'
++'6%65%64%2C%20%77%69%74%68%20%74%68%65%20%6C%69%63%65%6E%73%65%20%41%70%'
++'61%63%68%2D%32%3C%2F%70%3E%3C%2F%66%6F%6F%74%65%72%3E%3C%2F%62%6F%64%79%3E'))</script>
 </html>

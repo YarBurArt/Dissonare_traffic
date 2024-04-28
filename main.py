@@ -99,7 +99,7 @@ async def upload_route(request: Request, file: UploadFile = File(...)):
     client_ip = request.client.host
     file.filename = "some_attacks.pcap"
 
-    rel_path = "data\\" + client_ip + "\\" + file.filename
+    rel_path = "data/" + client_ip + "/" + file.filename
     path = os.path.join(os.path.dirname(__file__), rel_path)
     save_file_at_dir("data/" + client_ip, file.filename)
     try:
