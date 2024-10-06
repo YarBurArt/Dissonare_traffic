@@ -31,6 +31,28 @@ poetry run uvicorn main:app --reload --port 8001
 
 On linux, you may need to use `python3 -m poetry` replacing `poetry`. Then you don't need to enter the `poetry shell`.
 
+## or running in a Docker Container
+
+Clone the repository:
+```
+git clone https://github.com/YarBurArt/Dissonare_traffic.git
+```
+```
+cd Dissonare_traffic
+```
+
+Build and run the Docker image:
+```
+docker build -t dissonare_traffic .
+```
+```
+docker run -p 8080:8080 dissonare_traffic
+```
+
+The application will now be available at `http://localhost:8080` or just the way you configure docker and linux virtual networks. 
+Docker Isolation adds a new level of complexity and fun of exploitation through the escape step, especially this is my first project with a mini web app running on docker.  
+
+
 On android in termux the poetry installation needs to be googled manually.
 
 <!--  Hint: user input goes into the output, even with files of a different file type. Try to write an exploit on this. -->
