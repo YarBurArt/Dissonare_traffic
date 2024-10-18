@@ -59,51 +59,56 @@
     </style>
 </head>
 <body>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" 
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script type="text/javascript">
         function createNestedList(jsonData) {
-            function createList(data, listElement) {
-                for (const key in data) {
-                    const value = data[key];
-                    const listItem = document.createElement('li');
-                    
-                    if (Array.isArray(value) && value.length === 0) {
-                        listItem.textContent = `${key}: [ 78 7A ]`; // xz (some error)
-                        console.log(key);
-                    }else if (typeof value === 'object') {
-                        listItem.textContent = `${key} /`;
-                        const nestedList = document.createElement('ul');
-                        createList(value, nestedList);
-                        listItem.appendChild(nestedList);
-                    } else {
-                        listItem.textContent = `${key}: ${value}`;
-                        console.log(value);
-                    }
-                    listElement.appendChild(listItem);
-                }
-            }
-            const listContainer = document.getElementById('json-list');
-            listContainer.innerHTML = '';
-
-            createList(jsonData, listContainer);
-        }
-        function SavePcap() 
-        {
-            let photo = document.getElementById("file").files[0];  // file from input
-            let req = new XMLHttpRequest();
-            let formData = new FormData();
-            req.onreadystatechange = function() {
-                if (req.readyState == XMLHttpRequest.DONE) {
-                    jsonData = JSON.parse(req.responseText);
-                    console.log(jsonData);
-                    createNestedList(jsonData); 
+            function createList(data, $listElement) {
+              $.each(data, function(key, value) {
+                var $listItem = $('<li>');
+                if (Array.isArray(value) && value.length === 0) {
+                    $listItem.text(`${key}: [ 78 7A ]`);
+                    console.log(key); // fixme please
+                } else if (typeof value === 'object') {
+                    $listItem.text(`${key} /`);
+                    var $nestedList = $('<ul>');
+                    createList(value, $nestedList);
+                    $listItem.append($nestedList);
                 } else {
-                    alert("incorrect file"); 
+                    $listItem.text(`${key}: ${value}`);
+                    console.log(value); // fixme please please
+                }
+                $listElement.append($listItem);
+              });
+            }
+          
+            var $listContainer = $('#json-list');
+            $listContainer.empty();
+          
+            createList(jsonData, $listContainer);
+          }
+          
+        function SavePcap() {
+            var photo = $('#file')[0].files[0];
+            var formData = new FormData();
+            formData.append('file', photo);
+        
+            $.ajax({
+                url: '/upload_pcap',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    var jsonData = JSON.parse(response);
+                    console.log(jsonData); // fixme please
+                    createNestedList(jsonData);
+                },
+                error: function() {
+                    alert('Incorrect file');
                     window.location.href = '/';
                 }
-            }
-            formData.append("file", photo);                                
-            req.open("POST", '/upload_pcap');
-            req.send(formData);
+            });
         }
     </script>
     <h1>Traffic analysis in pcap files, free with open source</h1> 
